@@ -106,11 +106,14 @@
                                 <rect key="frame" x="16" y="83" width="343" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
-                                    <segment title="Date"/>
+                                    <segment title="To-Do"/>
                                     <segment title="Tag"/>
                                     <segment title="Completed"/>
                                     <segment title="All"/>
                                 </segments>
+                                <connections>
+                                    <action selector="changeSegmented:" destination="9pv-A4-QxB" eventType="valueChanged" id="oOM-NI-1nU"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -119,6 +122,7 @@
                     <tabBarItem key="tabBarItem" title="Cards" image="cards" id="acW-dT-cKf"/>
                     <connections>
                         <outlet property="collectionView" destination="NK1-a9-4aj" id="AUE-gN-1YG"/>
+                        <outlet property="segmentedControl" destination="bto-zX-e9Q" id="leN-NE-IDt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>

@@ -10,10 +10,12 @@ import UIKit
 
 class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, protocolAddTask {
     
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     var tasksList = [Task]()
+    var showList = [Task]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +30,12 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
             tasksList = arreglo!
         }
         
+        showList = tasksList;
+        
         let app = UIApplication.shared
         NotificationCenter.default.addObserver(self, selector: #selector(aplicacionTerminara(notif:)), name: UIApplication.willResignActiveNotification, object: app)
+        
+        loadCards()
     }
     
     @IBAction func aplicacionTerminara(notif: NSNotification) {
@@ -38,19 +44,23 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tasksList.count;
+        return showList.count;
+    }
+    
+    @IBAction func changeSegmented(_ sender: UISegmentedControl) {
+        loadCards()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
-        var formatter = DateFormatter()
+        let formatter = DateFormatter()
         
-        cell.lbTitle.text = tasksList[indexPath.row].title;
+        cell.lbTitle.text = showList[indexPath.row].title;
         formatter.dateFormat = "dd MMMM, yyyy"
-        cell.lbDate.text = formatter.string(from: tasksList[indexPath.row].date);
+        cell.lbDate.text = formatter.string(from: showList[indexPath.row].date);
         formatter.dateFormat = "HH:mm"
-        cell.lbTime.text = formatter.string(from: tasksList[indexPath.row].date);
+        cell.lbTime.text = formatter.string(from: showList[indexPath.row].date);
         
         cell.contentView.layer.cornerRadius = 4.0
         cell.contentView.layer.borderWidth = 1.0
@@ -66,6 +76,15 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         cell.btDelete.addTarget(self, action: #selector(deleteTask), for: .touchUpInside)
         cell.btDelete.tag = indexPath.row
         
+        cell.btDone.addTarget(self, action: #selector(doneTask), for: .touchUpInside)
+        cell.btDone.tag = indexPath.row
+        
+        /*
+        if(showList[indexPath.row].done == true){
+            cell.btDone.isHidden = true;
+        }
+        */
+        
         return cell;
     }
 
@@ -78,11 +97,32 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     func addTask(newTask: Task) {
         tasksList.append(newTask);
         tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
-        collectionView.reloadData();
+        loadCards();
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {
         tasksList.remove(at: sender.tag)
+        loadCards();
+    }
+    
+    @IBAction func doneTask(_ sender: UIButton) {
+        tasksList[sender.tag].done = true;
+        loadCards();
+    }
+    
+    func loadCards(){
+        if(segmentedControl.selectedSegmentIndex == 0){
+            showList = tasksList.filter{$0.done == false}
+        }
+        if(segmentedControl.selectedSegmentIndex == 1){
+            showList = tasksList;
+        }
+        if(segmentedControl.selectedSegmentIndex == 2){
+            showList = tasksList.filter{$0.done == true};
+        }
+        if(segmentedControl.selectedSegmentIndex == 3){
+            showList = tasksList;
+        }
         collectionView.reloadData();
     }
 
