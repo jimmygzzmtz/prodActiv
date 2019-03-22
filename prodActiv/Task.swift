@@ -11,13 +11,17 @@ import UIKit
 class Task: NSObject {
     
     var title : String = ""
-    var date : String = ""
+    var date : Date = Date()
     var time : String = ""
+    var tag : String = ""
+    var done : Bool = false
     
-    init(title : String, date : String, time : String) {
+    init(title : String, date : Date, time : String, tag : String, done : Bool) {
         self.title = title
         self.date = date
         self.time = time
+        self.tag = tag
+        self.done = done
     }
 
 }

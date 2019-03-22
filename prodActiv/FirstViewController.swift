@@ -27,9 +27,13 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         
+        var formatter = DateFormatter()
+        
         cell.lbTitle.text = tasksList[indexPath.row].title;
-        cell.lbDate.text = tasksList[indexPath.row].date;
-        cell.lbTime.text = tasksList[indexPath.row].time;
+        formatter.dateFormat = "dd MMMM, yyyy"
+        cell.lbDate.text = formatter.string(from: tasksList[indexPath.row].date);
+        formatter.dateFormat = "HH:mm"
+        cell.lbTime.text = formatter.string(from: tasksList[indexPath.row].date);
         
         cell.contentView.layer.cornerRadius = 4.0
         cell.contentView.layer.borderWidth = 1.0
@@ -53,6 +57,7 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     
     func addTask(newTask: Task) {
         tasksList.append(newTask);
+        tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
         collectionView.reloadData();
     }
 
