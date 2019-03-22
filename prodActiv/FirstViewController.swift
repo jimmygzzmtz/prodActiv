@@ -17,7 +17,24 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        if(UserDefaults.standard.object(forKey: "tasksList") == nil)
+        {
+            
+        }
+        else{
+            let saveData = UserDefaults.standard.data(forKey: "tasksList")
+            let arreglo = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Task]
+            tasksList = arreglo!
+        }
+        
+        let app = UIApplication.shared
+        NotificationCenter.default.addObserver(self, selector: #selector(aplicacionTerminara(notif:)), name: UIApplication.willResignActiveNotification, object: app)
+    }
+    
+    @IBAction func aplicacionTerminara(notif: NSNotification) {
+        let saveData = NSKeyedArchiver.archivedData(withRootObject: tasksList)
+        UserDefaults.standard.set(saveData, forKey: "tasksList")
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -46,9 +63,12 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         cell.layer.masksToBounds = false
         cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
         
+        cell.btDelete.addTarget(self, action: #selector(deleteTask), for: .touchUpInside)
+        cell.btDelete.tag = indexPath.row
+        
         return cell;
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let taskView = segue.destination as! ComposeViewController
         taskView.delegate = self
@@ -58,6 +78,11 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     func addTask(newTask: Task) {
         tasksList.append(newTask);
         tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
+        collectionView.reloadData();
+    }
+    
+    @IBAction func deleteTask(_ sender: UIButton) {
+        tasksList.remove(at: sender.tag)
         collectionView.reloadData();
     }
 

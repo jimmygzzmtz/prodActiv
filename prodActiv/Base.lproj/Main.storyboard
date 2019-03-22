@@ -26,7 +26,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NK1-a9-4aj">
-                                <rect key="frame" x="0.0" y="88" width="375" height="530"/>
+                                <rect key="frame" x="0.0" y="119" width="375" height="499"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YOH-Hf-htd">
@@ -81,6 +81,8 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <size key="customSize" width="349" height="150"/>
                                         <connections>
+                                            <outlet property="btDelete" destination="dhA-cH-S3E" id="Qpf-dN-0V7"/>
+                                            <outlet property="btDone" destination="pyb-e5-wsJ" id="WHo-MQ-2pk"/>
                                             <outlet property="lbDate" destination="voo-sm-uYg" id="KyP-ek-hPD"/>
                                             <outlet property="lbTime" destination="9Dp-h5-zmd" id="brH-di-JjN"/>
                                             <outlet property="lbTitle" destination="nJa-P7-0HS" id="2zD-3S-xlL"/>
@@ -100,6 +102,16 @@
                                     <segue destination="S0K-fC-jc6" kind="presentation" id="h6d-74-heK"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bto-zX-e9Q">
+                                <rect key="frame" x="16" y="83" width="343" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Date"/>
+                                    <segment title="Tag"/>
+                                    <segment title="Completed"/>
+                                    <segment title="All"/>
+                                </segments>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>

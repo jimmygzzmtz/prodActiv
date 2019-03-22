@@ -10,6 +10,9 @@ import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var btDelete: UIButton!
+    @IBOutlet weak var btDone: UIButton!
+    
     @IBOutlet weak var lbTitle: UILabel!
     @IBOutlet weak var lbDate: UILabel!
     @IBOutlet weak var lbTime: UILabel!

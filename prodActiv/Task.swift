@@ -8,20 +8,32 @@
 
 import UIKit
 
-class Task: NSObject {
+class Task: NSObject, NSCoding {
     
     var title : String = ""
     var date : Date = Date()
-    var time : String = ""
     var tag : String = ""
     var done : Bool = false
     
-    init(title : String, date : Date, time : String, tag : String, done : Bool) {
+    init(title : String, date : Date, tag : String, done : Bool) {
         self.title = title
         self.date = date
-        self.time = time
         self.tag = tag
         self.done = done
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(title, forKey: "title")
+        aCoder.encode(date, forKey: "date")
+        aCoder.encode(tag, forKey: "tag")
+        aCoder.encode(done as Any, forKey: "done")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.title = aDecoder.decodeObject(forKey: "title") as! String
+        self.date = aDecoder.decodeObject(forKey: "date") as! Date
+        self.tag = aDecoder.decodeObject(forKey: "tag") as! String
+        self.done = aDecoder.decodeObject(forKey: "done") as! Bool
     }
 
 }

@@ -32,7 +32,7 @@ class ComposeViewController: UIViewController {
     
     @IBOutlet weak var tvCompose: UITextView!
     
-    var newTask = Task(title: "title", date: Date(), time: "time", tag: "", done: false);
+    var newTask = Task(title: "title", date: Date(), tag: "", done: false);
     
     var delegate : protocolAddTask!
     
@@ -70,7 +70,7 @@ class ComposeViewController: UIViewController {
         var titleMatch = taskText.replacingOccurrences(of: dateMatch, with: "")
         titleMatch = titleMatch.replacingOccurrences(of: timeMatch, with: "")
         
-        newTask = Task(title: titleMatch, date: newDate, time: timeMatch, tag: "", done: false);
+        newTask = Task(title: titleMatch, date: newDate, tag: "", done: false);
         
         delegate.addTask(newTask: newTask)
         self.dismiss(animated: true, completion: nil)
