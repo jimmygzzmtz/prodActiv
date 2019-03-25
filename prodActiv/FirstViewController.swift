@@ -79,11 +79,12 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         cell.btDone.addTarget(self, action: #selector(doneTask), for: .touchUpInside)
         cell.btDone.tag = indexPath.row
         
-        /*
         if(showList[indexPath.row].done == true){
             cell.btDone.isHidden = true;
         }
-        */
+        if(showList[indexPath.row].done == false){
+            cell.btDone.isHidden = false;
+        }
         
         return cell;
     }
@@ -101,12 +102,30 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {
-        tasksList.remove(at: sender.tag)
+        //tasksList.remove(at: sender.tag)
+        
+        var count = 0;
+        for task in tasksList{
+            if (task == showList[sender.tag]){
+                tasksList.remove(at: count)
+            }
+            count = count + 1;
+        }
+        
         loadCards();
     }
     
     @IBAction func doneTask(_ sender: UIButton) {
-        tasksList[sender.tag].done = true;
+        //tasksList[sender.tag].done = true;
+    
+        var count = 0;
+        for task in tasksList{
+            if (task == showList[sender.tag]){
+                tasksList[count].done = true;
+            }
+            count = count + 1;
+        }
+        
         loadCards();
     }
     
