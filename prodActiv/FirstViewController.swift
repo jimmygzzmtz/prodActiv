@@ -66,6 +66,10 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         formatter.dateFormat = "HH:mm"
         cell.lbTime.text = formatter.string(from: showList[indexPath.row].date);
         
+        let colors = [UIColor.yellow.cgColor, UIColor.green.cgColor, UIColor.orange.cgColor, UIColor.cyan.cgColor]
+        cell.contentView.layer.backgroundColor = colors.randomElement()
+        
+        
         cell.contentView.layer.cornerRadius = 4.0
         cell.contentView.layer.borderWidth = 1.0
         cell.contentView.layer.borderColor = UIColor.clear.cgColor
