@@ -67,6 +67,10 @@ class ComposeViewController: UIViewController {
             newDate = convertToTime(sTime: timeMatch, theDate: newDate);
         }
         
+        if(timeMatches.count == 0){
+            newDate = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: Date()), minute: Calendar.current.component(.minute, from: Date()), second: Calendar.current.component(.second, from: Date()), of: newDate)!
+        }
+        
         var titleMatch = taskText.replacingOccurrences(of: dateMatch, with: "")
         titleMatch = titleMatch.replacingOccurrences(of: timeMatch, with: "")
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, protocolAddTask {
+class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolAddTask {
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -52,7 +52,11 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        
+        cell.setupSwipeGesture()
+        cell.swipeGesture.delegate = self;
         
         let formatter = DateFormatter()
         
@@ -88,6 +92,10 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         
         return cell;
     }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let taskView = segue.destination as! ComposeViewController
@@ -104,15 +112,23 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     @IBAction func deleteTask(_ sender: UIButton) {
         //tasksList.remove(at: sender.tag)
         
-        var count = 0;
-        for task in tasksList{
-            if (task == showList[sender.tag]){
-                tasksList.remove(at: count)
+        let alerta = UIAlertController(title: "Delete?", message: "The task will be permanently removed.", preferredStyle: .alert)
+        alerta.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+            var count = 0;
+            for task in self.tasksList{
+                if (task == self.showList[sender.tag]){
+                    self.tasksList.remove(at: count)
+                }
+                count = count + 1;
             }
-            count = count + 1;
-        }
+            self.loadCards();
+        }))
+        alerta.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+
+        }))
         
-        loadCards();
+        present(alerta, animated: true, completion: nil)
+
     }
     
     @IBAction func doneTask(_ sender: UIButton) {
