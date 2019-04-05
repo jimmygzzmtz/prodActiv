@@ -17,5 +17,4 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbDate: UILabel!
     @IBOutlet weak var lbTime: UILabel!
     
-    
 }

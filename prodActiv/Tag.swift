@@ -8,6 +8,6 @@
 
 import UIKit
 
-class Tag: NSObject {
-
+class Tag: NSObject, NSCoding {
+    
 }
