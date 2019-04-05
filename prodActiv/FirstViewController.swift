@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, protocolAddTask {
+class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolAddTask {
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -52,7 +52,11 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        
+        cell.setupSwipeGesture()
+        cell.swipeGesture.delegate = self;
         
         let formatter = DateFormatter()
         
@@ -61,6 +65,10 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         cell.lbDate.text = formatter.string(from: showList[indexPath.row].date);
         formatter.dateFormat = "HH:mm"
         cell.lbTime.text = formatter.string(from: showList[indexPath.row].date);
+        
+        let colors = [UIColor.yellow.cgColor, UIColor.green.cgColor, UIColor.orange.cgColor, UIColor.cyan.cgColor]
+        cell.contentView.layer.backgroundColor = colors.randomElement()
+        
         
         cell.contentView.layer.cornerRadius = 4.0
         cell.contentView.layer.borderWidth = 1.0
@@ -79,13 +87,18 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
         cell.btDone.addTarget(self, action: #selector(doneTask), for: .touchUpInside)
         cell.btDone.tag = indexPath.row
         
-        /*
         if(showList[indexPath.row].done == true){
             cell.btDone.isHidden = true;
         }
-        */
+        if(showList[indexPath.row].done == false){
+            cell.btDone.isHidden = false;
+        }
         
         return cell;
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -101,12 +114,38 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {
-        tasksList.remove(at: sender.tag)
-        loadCards();
+        //tasksList.remove(at: sender.tag)
+        
+        let alerta = UIAlertController(title: "Delete?", message: "The task will be permanently removed.", preferredStyle: .alert)
+        alerta.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action: UIAlertAction!) in
+            var count = 0;
+            for task in self.tasksList{
+                if (task == self.showList[sender.tag]){
+                    self.tasksList.remove(at: count)
+                }
+                count = count + 1;
+            }
+            self.loadCards();
+        }))
+        alerta.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+
+        }))
+        
+        present(alerta, animated: true, completion: nil)
+
     }
     
     @IBAction func doneTask(_ sender: UIButton) {
-        tasksList[sender.tag].done = true;
+        //tasksList[sender.tag].done = true;
+    
+        var count = 0;
+        for task in tasksList{
+            if (task == showList[sender.tag]){
+                tasksList[count].done = true;
+            }
+            count = count + 1;
+        }
+        
         loadCards();
     }
     
