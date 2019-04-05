@@ -17,8 +17,6 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbDate: UILabel!
     @IBOutlet weak var lbTime: UILabel!
     
-<<<<<<< HEAD
-=======
     var swipeGesture: UIPanGestureRecognizer!
     var originalPoint: CGPoint!
     
@@ -32,9 +30,9 @@ class CollectionViewCell: UICollectionViewCell {
             let xDistance:CGFloat = gestureRecognizer.translation(in: self).x
             
             switch(gestureRecognizer.state) {
-            case UIGestureRecognizerState.began:
+            case UIGestureRecognizer.State.began:
                 self.originalPoint = self.center
-            case UIGestureRecognizerState.changed:
+            case UIGestureRecognizer.State.changed:
                 let translation: CGPoint = gestureRecognizer.translation(in: self)
                 let displacement: CGPoint = CGPoint.init(x: translation.x, y: translation.y)
                 
@@ -42,7 +40,7 @@ class CollectionViewCell: UICollectionViewCell {
                     self.transform = CGAffineTransform.init(translationX: displacement.x, y: 0)
                     self.center = CGPoint(x: self.originalPoint.x + xDistance, y: self.originalPoint.y)
                 }
-            case UIGestureRecognizerState.ended:
+            case UIGestureRecognizer.State.ended:
                 let hasMovedToFarLeft = self.frame.maxX < UIScreen.main.bounds.width / 2
                 if (hasMovedToFarLeft) {
                     btDone.sendActions(for: .touchUpInside)
@@ -60,5 +58,5 @@ class CollectionViewCell: UICollectionViewCell {
         }
         
     }
->>>>>>> 41cb1a0171efde19208aef60b18a0c27c6016bad
+    
 }
