@@ -1,5 +1,5 @@
 //
-//  ComposeViewController.swift
+//  ComposeVC.swift
 //  prodActiv
 //
 //  Created by Jaime Alberto Gonzalez on 3/22/19.
@@ -28,7 +28,7 @@ extension String {
     }
 }
 
-class ComposeViewController: UIViewController {
+class ComposeVC: UIViewController {
     
     @IBOutlet weak var tvCompose: UITextView!
     

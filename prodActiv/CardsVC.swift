@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  CardsVC.swift
 //  prodActiv
 //
 //  Created by Jaime Alberto Gonzalez on 3/18/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolAddTask {
+class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolAddTask {
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -102,7 +102,7 @@ class FirstViewController: UIViewController, UICollectionViewDataSource, UIColle
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let taskView = segue.destination as! ComposeViewController
+        let taskView = segue.destination as! ComposeVC
         taskView.delegate = self
         
     }

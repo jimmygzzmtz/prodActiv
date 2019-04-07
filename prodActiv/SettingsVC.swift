@@ -1,5 +1,5 @@
 //
-//  SecondViewController.swift
+//  SettingsVC.swift
 //  prodActiv
 //
 //  Created by Jaime Alberto Gonzalez on 3/18/19.
@@ -8,7 +8,18 @@
 
 import UIKit
 
-class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, protocolTags {
+    
+    // TAGS PROTOCOL
+    
+    func addTag(newTag: Tag, i: IndexPath) {
+        
+    }
+    
+    func editTag(newTag: Tag, i: IndexPath) {
+        
+    }
+    
 
     var tagsArray = [Tag]()
     
@@ -30,10 +41,8 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBAction func addTag(_ sender: UIButton) {
         
     }
-    
-    
 
-    //TAGS TABLE VIEW
+    // TAGS TABLE VIEW
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tagsArray.count
@@ -42,9 +51,25 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         cell.textLabel?.text = tagsArray[indexPath.row].name
-//        cell.detailTextLabel?.text = "\(indexPath.row)"
+//        cell.detailTextLabel?.text = tagsArray[indexPath.row].color.description
         return cell
     }
-
+    
+    // SEGUE
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! NewTagVC
+        if (segue.identifier == "edit") {
+            vc.editTag = true
+            
+//            vista.catNombre = cats[(tableView.indexPathForSelectedRow?.row)!].titulo
+//            indexModifica = tableView.indexPathForSelectedRow
+        }
+        else {
+            vc.editTag = false
+        }
+        vc.delegate = self
+    }
+    
 }
 
