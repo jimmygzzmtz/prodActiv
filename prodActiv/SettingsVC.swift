@@ -10,17 +10,21 @@ import UIKit
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, protocolTags {
     
+    
     // TAGS PROTOCOL
     
-    func addTag(newTag: Tag, i: IndexPath) {
-        
+    func addTag(newTag: Tag) {
+        tagsArray.append(newTag)
+        tagsTableView.reloadData()
+        saveData()
     }
     
     func editTag(newTag: Tag, i: IndexPath) {
-        
+        tagsArray[i.row] = newTag
+        tagsTableView.reloadData()
+        saveData()
     }
     
-
     var tagsArray = [Tag]()
     
     @IBOutlet weak var switchEsp: UISwitch!
@@ -30,16 +34,23 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let t1 = Tag(name: "iOS", color: UIColor.orange)
-        let t2 = Tag(name: "Lenguajes", color: UIColor.yellow)
-        let t3 = Tag(name: "Web", color: UIColor.cyan)
-        tagsArray.append(t1)
-        tagsArray.append(t2)
-        tagsArray.append(t3)
-    }
-    
-    @IBAction func addTag(_ sender: UIButton) {
         
+        if(UserDefaults.standard.object(forKey: "tagsList") == nil)
+        {
+            let t1 = Tag(name: "iOS", color: UIColor.orange)
+            let t2 = Tag(name: "Lenguajes", color: UIColor.yellow)
+            let t3 = Tag(name: "Web", color: UIColor.cyan)
+            tagsArray.append(t1)
+            tagsArray.append(t2)
+            tagsArray.append(t3)
+            print("No save data")
+        }
+        else{
+            print("Save data found")
+            let saveData = UserDefaults.standard.data(forKey: "tagsList")
+            let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
+            tagsArray = arr!
+        }
     }
 
     // TAGS TABLE VIEW
@@ -51,8 +62,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         cell.textLabel?.text = tagsArray[indexPath.row].name
-//        cell.detailTextLabel?.text = tagsArray[indexPath.row].color.description
+        cell.backgroundColor = tagsArray[indexPath.row].color.withAlphaComponent(0.75)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // SEGUE
@@ -61,14 +76,19 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         let vc = segue.destination as! NewTagVC
         if (segue.identifier == "edit") {
             vc.editTag = true
-            
-//            vista.catNombre = cats[(tableView.indexPathForSelectedRow?.row)!].titulo
-//            indexModifica = tableView.indexPathForSelectedRow
+            vc.editingTag = tagsArray[(tagsTableView.indexPathForSelectedRow?.row)!]
+            vc.editingIndex = tagsTableView.indexPathForSelectedRow
         }
         else {
             vc.editTag = false
         }
         vc.delegate = self
+    }
+    
+    // FUNC SAVE DATA
+    func saveData() {
+        let saveData = NSKeyedArchiver.archivedData(withRootObject: tagsArray)
+        UserDefaults.standard.set(saveData, forKey: "tagsList")
     }
     
 }

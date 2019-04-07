@@ -9,7 +9,7 @@
 import UIKit
 
 protocol protocolTags {
-    func addTag(newTag : Tag, i : IndexPath) -> Void
+    func addTag(newTag : Tag) -> Void
     func editTag(newTag : Tag, i : IndexPath) -> Void
 }
 
@@ -23,6 +23,9 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedColor : UIColor!
     var editTag: Bool!
     
+    var editingTag : Tag!
+    var editingIndex : IndexPath!
+    
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var tfTagName: UITextField!
     @IBOutlet weak var viewSelectedColor: UIView!
@@ -31,8 +34,10 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         if (editTag) {
-            tfTagName.text = tagName
-            viewSelectedColor.backgroundColor = selectedColor.withAlphaComponent(0.75)
+            btnSave.isEnabled = true
+            tfTagName.text = editingTag.name
+            selectedColor = editingTag.color
+            viewSelectedColor.backgroundColor = editingTag.color.withAlphaComponent(0.75)
             lblTitle.text = "Edit Tag"
         }
         else {
@@ -43,20 +48,20 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // BTN METHODS
     
     @IBAction func saveTag(_ sender: UIButton) {
-        if (tfTagName.text != nil) {
+        if (tfTagName.text != "") {
             if (editTag) {
-                
-                //call delegate function for editing tag
-                
-//                let newTag = Tag(name: tagName, color: selectedColor)
+                let newTag = Tag(name: tfTagName.text!, color: selectedColor)
+                delegate.editTag(newTag: newTag, i: editingIndex)
                 self.dismiss(animated: true, completion: nil)
             }
             else {
-                // delegate fctn for new tag
+                let newTag = Tag(name: tfTagName.text!, color: selectedColor)
+                delegate.addTag(newTag: newTag)
+                self.dismiss(animated: true, completion: nil)
             }
         }
         else {
-            //alert, tf empty
+            showAlert(msg: "Please enter a name for your tag.")
         }
     }
     
@@ -95,5 +100,14 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // ALERT FUNCTION
+    
+    func showAlert(msg : String) {
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
 
 }

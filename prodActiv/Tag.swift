@@ -10,8 +10,8 @@ import UIKit
 
 class Tag: NSObject, NSCoding {
     
-    var name : String!
-    var color : UIColor!
+    var name : String
+    var color : UIColor
     
     init(name: String, color: UIColor) {
         self.name = name

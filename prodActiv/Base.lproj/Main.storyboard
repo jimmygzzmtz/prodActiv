@@ -258,7 +258,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="New Tag"/>
                                 <connections>
-                                    <action selector="addTag:" destination="8rJ-Kc-sve" eventType="touchUpInside" id="T99-mL-hQ8"/>
                                     <segue destination="FUq-CC-odM" kind="show" identifier="newtag" id="mDr-ww-DuN"/>
                                 </connections>
                             </button>
