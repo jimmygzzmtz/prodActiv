@@ -43,10 +43,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             tagsArray.append(t1)
             tagsArray.append(t2)
             tagsArray.append(t3)
-            print("No save data")
         }
         else{
-            print("Save data found")
             let saveData = UserDefaults.standard.data(forKey: "tagsList")
             let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
             tagsArray = arr!

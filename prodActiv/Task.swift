@@ -12,10 +12,10 @@ class Task: NSObject, NSCoding {
     
     var title : String = ""
     var date : Date = Date()
-    var tag : String = ""
+    var tag : Tag!
     var done : Bool = false
     
-    init(title : String, date : Date, tag : String, done : Bool) {
+    init(title : String, date : Date, tag : Tag, done : Bool) {
         self.title = title
         self.date = date
         self.tag = tag
@@ -32,7 +32,7 @@ class Task: NSObject, NSCoding {
     required init?(coder aDecoder: NSCoder) {
         self.title = aDecoder.decodeObject(forKey: "title") as! String
         self.date = aDecoder.decodeObject(forKey: "date") as! Date
-        self.tag = aDecoder.decodeObject(forKey: "tag") as! String
+        self.tag = (aDecoder.decodeObject(forKey: "tag") as! Tag)
         self.done = aDecoder.decodeObject(forKey: "done") as! Bool
     }
 

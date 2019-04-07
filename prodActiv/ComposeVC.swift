@@ -32,7 +32,8 @@ class ComposeVC: UIViewController {
     
     @IBOutlet weak var tvCompose: UITextView!
     
-    var newTask = Task(title: "title", date: Date(), tag: "", done: false);
+    var newTask = Task(title: "title", date: Date(), tag: Tag(name: "tagname", color: UIColor.gray), done: false);
+    var tagsArray = [Tag]()
     
     var delegate : protocolAddTask!
     
@@ -41,13 +42,19 @@ class ComposeVC: UIViewController {
         
         self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
         self.tvCompose.layer.borderWidth = 1
-
+        
+        if(UserDefaults.standard.object(forKey: "tagsList") != nil) {
+            let saveData = UserDefaults.standard.data(forKey: "tagsList")
+            let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
+            tagsArray = arr!
+        }
     }
     
     @IBAction func addButton(_ sender: UIButton) {
         
-        let taskText = tvCompose.text!;
+        let taskText = tvCompose.text!
         
+        //DATE MATCHING
         var newDate = Date()
         
         var dateMatch = "";
@@ -60,12 +67,14 @@ class ComposeVC: UIViewController {
         
         let dateMatches = taskText.matchingStrings(regex: allDates)
         
-        let timeMatches = taskText.matchingStrings(regex: "((at|a las|a la)?\\s*((\\d+):(\\d+)\\s*(am|pm)))|((at|a las|a la)?\\s*((\\d+):(\\d+)))|((at|a las|a la)?\\s*((\\d+)\\s*(am|pm)))|((at|a las|a la)\\s*(\\d+))")
-        
         if (dateMatches.count != 0){
             dateMatch = dateMatches[0][0];
             newDate = convertToDate(sDate: dateMatch, today: newDate);
         }
+        
+        // TIME MATCHING
+        
+        let timeMatches = taskText.matchingStrings(regex: "((at|a las|a la)?\\s*((\\d+):(\\d+)\\s*(am|pm)))|((at|a las|a la)?\\s*((\\d+):(\\d+)))|((at|a las|a la)?\\s*((\\d+)\\s*(am|pm)))|((at|a las|a la)\\s*(\\d+))")
         
         if (timeMatches.count != 0){
             timeMatch = timeMatches[0][0];
@@ -76,10 +85,21 @@ class ComposeVC: UIViewController {
             newDate = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: Date()), minute: Calendar.current.component(.minute, from: Date()), second: Calendar.current.component(.second, from: Date()), of: newDate)!
         }
         
+        // TAG MATCHING
+        
+        var tagMatch : Tag!
+        for tag in tagsArray {
+            // match tag....
+        }
+        
+        tagMatch = Tag(name: "iOS", color: UIColor.cyan)
+        
+        // TASK CREATION
         var titleMatch = taskText.replacingOccurrences(of: dateMatch, with: "")
         titleMatch = titleMatch.replacingOccurrences(of: timeMatch, with: "")
+        titleMatch = titleMatch.replacingOccurrences(of: tagMatch.name, with: "")
         
-        newTask = Task(title: titleMatch, date: newDate, tag: "", done: false);
+        newTask = Task(title: titleMatch, date: newDate, tag: tagMatch, done: false)
         
         delegate.addTask(newTask: newTask)
         self.dismiss(animated: true, completion: nil)
@@ -237,8 +257,6 @@ class ComposeVC: UIViewController {
             let dateComponents = DateComponents(calendar: calendar, month: 12, day: Int(sDate.matchingStrings(regex: "\\d+")[0][0])!)
             return calendar.nextDate(after: today, matching: dateComponents, matchingPolicy: .nextTimePreservingSmallerComponents)!
         }
-        
-        
         
         return today;
         

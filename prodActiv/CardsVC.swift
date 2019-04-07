@@ -66,10 +66,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         formatter.dateFormat = "HH:mm"
         cell.lbTime.text = formatter.string(from: showList[indexPath.row].date);
         
-        let colors = [UIColor.yellow.cgColor, UIColor.green.cgColor, UIColor.orange.cgColor, UIColor.cyan.cgColor]
-        cell.contentView.layer.backgroundColor = colors.randomElement()
-        
-        
+        cell.contentView.layer.backgroundColor = showList[indexPath.row].tag.color.cgColor
         cell.contentView.layer.cornerRadius = 4.0
         cell.contentView.layer.borderWidth = 1.0
         cell.contentView.layer.borderColor = UIColor.clear.cgColor
@@ -104,7 +101,6 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let taskView = segue.destination as! ComposeVC
         taskView.delegate = self
-        
     }
     
     func addTask(newTask: Task) {
@@ -132,7 +128,6 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         }))
         
         present(alerta, animated: true, completion: nil)
-
     }
     
     @IBAction func doneTask(_ sender: UIButton) {
