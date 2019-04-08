@@ -61,6 +61,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         let formatter = DateFormatter()
         
         cell.lbTitle.text = showList[indexPath.row].title;
+        cell.lblTagName.text = showList[indexPath.row].tag.name
         formatter.dateFormat = "dd MMMM, yyyy"
         cell.lbDate.text = formatter.string(from: showList[indexPath.row].date);
         formatter.dateFormat = "HH:mm"
@@ -149,7 +150,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
             showList = tasksList.filter{$0.done == false}
         }
         if(segmentedControl.selectedSegmentIndex == 1){
-            showList = tasksList;
+            showList = tasksList
         }
         if(segmentedControl.selectedSegmentIndex == 2){
             showList = tasksList.filter{$0.done == true};
