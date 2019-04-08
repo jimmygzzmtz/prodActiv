@@ -89,5 +89,15 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         UserDefaults.standard.set(saveData, forKey: "tagsList")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        switchEng.isOn = UserDefaults.standard.bool(forKey: "switchEng")
+        switchEsp.isOn = UserDefaults.standard.bool(forKey: "switchEsp")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UserDefaults.standard.set(switchEng.isOn, forKey: "switchEng")
+        UserDefaults.standard.set(switchEsp.isOn, forKey: "switchEsp")
+    }
+    
 }
 
