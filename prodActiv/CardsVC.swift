@@ -150,7 +150,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
             showList = tasksList.filter{$0.done == false}
         }
         if(segmentedControl.selectedSegmentIndex == 1){
-            showList = tasksList
+            showList = tasksList.sorted(by: {$0.tag.name > $1.tag.name})
         }
         if(segmentedControl.selectedSegmentIndex == 2){
             showList = tasksList.filter{$0.done == true};
