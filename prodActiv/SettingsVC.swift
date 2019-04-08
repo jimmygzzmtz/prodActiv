@@ -95,8 +95,40 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        UserDefaults.standard.set(switchEng.isOn, forKey: "switchEng")
-        UserDefaults.standard.set(switchEsp.isOn, forKey: "switchEsp")
+        if (!switchEng.isOn && !switchEsp.isOn) {
+            showAlert(msg: "Please select a language for regex parser.")
+        }
+        else {
+            UserDefaults.standard.set(switchEng.isOn, forKey: "switchEng")
+            UserDefaults.standard.set(switchEsp.isOn, forKey: "switchEsp")
+        }
+        
+    }
+    
+    // REGEX LANGUAGE SWITCHES
+    
+    @IBAction func switchEsp(_ sender: UISwitch) {
+        if (!switchEsp.isOn && !switchEng.isOn) {
+            showAlert(msg: "Please select at least one language.")
+            switchEsp.setOn(true, animated: true)
+        }
+    }
+    
+    @IBAction func switchEng(_ sender: UISwitch) {
+        if (!switchEng.isOn && !switchEsp.isOn) {
+            showAlert(msg: "Please select at least one language.")
+            switchEng.setOn(true, animated: true)
+        }
+    }
+    
+    
+    // ALERT FUNCTION
+    
+    func showAlert(msg : String) {
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
 }
