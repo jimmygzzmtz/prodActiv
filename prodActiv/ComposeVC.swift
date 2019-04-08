@@ -280,9 +280,7 @@ class ComposeVC: UIViewController {
         if sTime.matchingStrings(regex: "pm").count != 0{
             hours += 12;
         }
-        
         return Calendar.current.date(bySettingHour: hours, minute: minutes, second: 0, of: theDate)!
-        
     }
     
 
