@@ -109,6 +109,9 @@ class ComposeVC: UIViewController {
                 }
             }
         }
+        if (tagMatch == nil) {
+            tagMatch = Tag(name: "", color: UIColor(red:1.00, green:1.00, blue:1.00, alpha:1.0))
+        }
         
         //tagMatch = Tag(name: "iOS", color: UIColor.cyan)
         
