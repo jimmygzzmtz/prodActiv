@@ -43,7 +43,16 @@ class ComposeVC: UIViewController {
         self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
         self.tvCompose.layer.borderWidth = 1
         
-        if(UserDefaults.standard.object(forKey: "tagsList") != nil) {
+        if(UserDefaults.standard.object(forKey: "tagsList") == nil)
+        {
+            let t1 = Tag(name: "iOS", color: UIColor.orange)
+            let t2 = Tag(name: "Lenguajes", color: UIColor.yellow)
+            let t3 = Tag(name: "Web", color: UIColor.cyan)
+            tagsArray.append(t1)
+            tagsArray.append(t2)
+            tagsArray.append(t3)
+        }
+        else{
             let saveData = UserDefaults.standard.data(forKey: "tagsList")
             let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
             tagsArray = arr!
@@ -89,15 +98,29 @@ class ComposeVC: UIViewController {
         
         var tagMatch : Tag!
         for tag in tagsArray {
-            // match tag....
+            let tagMatches = taskText.matchingStrings(regex: "((" + tag.name + "))")
+            print("\n")
+            print(tagMatches)
+            print("\n")
+            if (tagMatches.count != 0) {
+                if (tag.name == tagMatches[0][0]) {
+                    tagMatch = tag
+                    break
+                }
+            }
+        }
+        if (tagMatch == nil) {
+            tagMatch = Tag(name: "", color: UIColor(red:1.00, green:1.00, blue:1.00, alpha:1.0))
         }
         
-        tagMatch = Tag(name: "iOS", color: UIColor.cyan)
+        //tagMatch = Tag(name: "iOS", color: UIColor.cyan)
         
         // TASK CREATION
         var titleMatch = taskText.replacingOccurrences(of: dateMatch, with: "")
         titleMatch = titleMatch.replacingOccurrences(of: timeMatch, with: "")
-        titleMatch = titleMatch.replacingOccurrences(of: tagMatch.name, with: "")
+        if ((tagMatch) != nil) {
+            titleMatch = titleMatch.replacingOccurrences(of: tagMatch.name, with: "")
+        }
         
         newTask = Task(title: titleMatch, date: newDate, tag: tagMatch, done: false)
         
