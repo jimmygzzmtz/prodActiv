@@ -1,0 +1,62 @@
+//
+//  DetailsVC.swift
+//  prodActiv
+//
+//  Created by Kevin Radtke on 4/25/19.
+//  Copyright © 2019 Jaime Alberto Gonzalez. All rights reserved.
+//
+
+import UIKit
+
+class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    var tagsArray = [Tag]()
+    var selectedTag = -1
+    
+    @IBOutlet weak var tfTaskName: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchTags()
+        let currentDate = Date()
+        datePicker.minimumDate = currentDate
+    }
+    
+    // TAGS TABLE VIEW
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tagsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        cell.textLabel?.text = tagsArray[indexPath.row].name
+        cell.backgroundColor = tagsArray[indexPath.row].color.withAlphaComponent(0.75)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
+    // FUNCTIONS
+    
+    func fetchTags() {
+        if(UserDefaults.standard.object(forKey: "tagsList") == nil)
+        {
+            let t1 = Tag(name: "Personal", color: UIColor.orange)
+            let t2 = Tag(name: "Work", color: UIColor.yellow)
+            let t3 = Tag(name: "Health", color: UIColor.cyan)
+            tagsArray.append(t1)
+            tagsArray.append(t2)
+            tagsArray.append(t3)
+        }
+        else{
+            let saveData = UserDefaults.standard.data(forKey: "tagsList")
+            let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
+            tagsArray = arr!
+        }
+    }
+}

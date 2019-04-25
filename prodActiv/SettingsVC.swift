@@ -32,14 +32,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     
     @IBOutlet weak var tagsTableView: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    func fetchTags() {
         if(UserDefaults.standard.object(forKey: "tagsList") == nil)
         {
-            let t1 = Tag(name: "iOS", color: UIColor.orange)
-            let t2 = Tag(name: "Lenguajes", color: UIColor.yellow)
-            let t3 = Tag(name: "Web", color: UIColor.cyan)
+            let t1 = Tag(name: "Personal", color: UIColor.orange)
+            let t2 = Tag(name: "Work", color: UIColor.yellow)
+            let t3 = Tag(name: "Health", color: UIColor.cyan)
             tagsArray.append(t1)
             tagsArray.append(t2)
             tagsArray.append(t3)
@@ -49,6 +47,12 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
             tagsArray = arr!
         }
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchTags()
     }
 
     // TAGS TABLE VIEW
