@@ -18,6 +18,9 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var lbDate: UILabel!
     @IBOutlet weak var lbTime: UILabel!
     
+    @IBOutlet weak var checkImg: UIImageView!
+    
+    
     var swipeGesture: UIPanGestureRecognizer!
     var originalPoint: CGPoint!
     
@@ -27,7 +30,7 @@ class CollectionViewCell: UICollectionViewCell {
     }
     
     @objc func swiped(_ gestureRecognizer: UIPanGestureRecognizer) {
-        if (btDone.isHidden == false){
+        //if (btDone.isHidden == false){
             let xDistance:CGFloat = gestureRecognizer.translation(in: self).x
             
             switch(gestureRecognizer.state) {
@@ -56,7 +59,7 @@ class CollectionViewCell: UICollectionViewCell {
             default:
                 break
             }
-        }
+        //}
         
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 protocol protocolAddTask {
     func addTask(newTask : Task)
@@ -14,6 +15,7 @@ protocol protocolAddTask {
 
 var switchEsp = true;
 var switchEng = true;
+var switchNotif = true;
 
 
 extension String {
@@ -43,14 +45,17 @@ class ComposeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(quitaTeclado))
+        view.addGestureRecognizer(tap)
+        
         self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
         self.tvCompose.layer.borderWidth = 1
         
         if(UserDefaults.standard.object(forKey: "tagsList") == nil)
         {
-            let t1 = Tag(name: "iOS", color: UIColor.orange)
-            let t2 = Tag(name: "Lenguajes", color: UIColor.yellow)
-            let t3 = Tag(name: "Web", color: UIColor.cyan)
+            let t1 = Tag(name: "Personal", color: UIColor.orange)
+            let t2 = Tag(name: "Work", color: UIColor.yellow)
+            let t3 = Tag(name: "Health", color: UIColor.cyan)
             tagsArray.append(t1)
             tagsArray.append(t2)
             tagsArray.append(t3)
@@ -62,14 +67,20 @@ class ComposeVC: UIViewController {
         }
     }
     
+    @IBAction func quitaTeclado(){
+        view.endEditing(true)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         if(UserDefaults.standard.object(forKey: "switchEng") != nil){
             switchEng = UserDefaults.standard.bool(forKey: "switchEng")
             switchEsp = UserDefaults.standard.bool(forKey: "switchEsp")
+            switchNotif = UserDefaults.standard.bool(forKey: "switchNotif")
         }
         else{
             UserDefaults.standard.set(true, forKey: "switchEng")
             UserDefaults.standard.set(true, forKey: "switchEsp")
+            UserDefaults.standard.set(true, forKey: "switchNotif")
         }
     }
     
@@ -135,12 +146,11 @@ class ComposeVC: UIViewController {
         
         var tagMatch : Tag!
         for tag in tagsArray {
-            let tagMatches = taskText.matchingStrings(regex: "((" + tag.name + "))")
-            print("\n")
-            print(tagMatches)
-            print("\n")
+            let searchName = tag.name.lowercased()
+            let searchText = taskText.lowercased()
+            let tagMatches = searchText.matchingStrings(regex: searchName)
             if (tagMatches.count != 0) {
-                if (tag.name == tagMatches[0][0]) {
+                if (searchName == tagMatches[0][0]) {
                     tagMatch = tag
                     break
                 }
@@ -156,12 +166,37 @@ class ComposeVC: UIViewController {
         var titleMatch = taskText.replacingOccurrences(of: dateMatch, with: "")
         titleMatch = titleMatch.replacingOccurrences(of: timeMatch, with: "")
         if ((tagMatch) != nil) {
-            titleMatch = titleMatch.replacingOccurrences(of: tagMatch.name, with: "")
+            titleMatch = titleMatch.replacingOccurrences(of: tagMatch.name, with: "", options: .caseInsensitive)
         }
         
         newTask = Task(title: titleMatch, date: newDate, tag: tagMatch, done: false)
         
         delegate.addTask(newTask: newTask)
+        
+        if(switchNotif == true && (Calendar.current.date(byAdding: .minute, value: -30, to: newDate)! > Date())){
+            let notificationCenter = UNUserNotificationCenter.current()
+            
+            let content = UNMutableNotificationContent()
+            content.title = "Reminder"
+            content.body = titleMatch
+            content.sound = UNNotificationSound.default
+            content.badge = 1
+            
+            let dateTrig = Calendar.current.date(byAdding: .minute, value: -30, to: newDate)
+            let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: dateTrig!)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+            
+            let identifier = "Task Notification"
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+            notificationCenter.add(request) { (error) in
+                if let error = error {
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+            
+        }
+        
+        
         self.dismiss(animated: true, completion: nil)
     }
     

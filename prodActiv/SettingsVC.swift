@@ -30,6 +30,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     @IBOutlet weak var switchEsp: UISwitch!
     @IBOutlet weak var switchEng: UISwitch!
     
+    @IBOutlet weak var switchNotif: UISwitch!
+    
     @IBOutlet weak var tagsTableView: UITableView!
     
     func fetchTags() {
@@ -96,6 +98,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     override func viewWillAppear(_ animated: Bool) {
         switchEng.isOn = UserDefaults.standard.bool(forKey: "switchEng")
         switchEsp.isOn = UserDefaults.standard.bool(forKey: "switchEsp")
+        switchNotif.isOn = UserDefaults.standard.bool(forKey: "switchNotif")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -105,6 +108,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         else {
             UserDefaults.standard.set(switchEng.isOn, forKey: "switchEng")
             UserDefaults.standard.set(switchEsp.isOn, forKey: "switchEsp")
+            UserDefaults.standard.set(switchNotif.isOn, forKey: "switchNotif")
         }
         
     }
@@ -124,6 +128,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
             switchEng.setOn(true, animated: true)
         }
     }
+    
+    
     
     
     // ALERT FUNCTION

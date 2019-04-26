@@ -82,15 +82,29 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         cell.btDelete.addTarget(self, action: #selector(deleteTask), for: .touchUpInside)
         cell.btDelete.tag = indexPath.row
         
+        let origTrash = UIImage(named: "trash");
+        let tintedTrash = origTrash?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        cell.btDelete.setImage(tintedTrash, for: .normal)
+        cell.btDelete.tintColor = UIColor.red
+        
+        let origCheck = UIImage(named: "check");
+        let tintedCheck = origCheck?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
+        cell.checkImg.image = tintedCheck
+        cell.checkImg.tintColor = UIColor.green
+        
         cell.btDone.addTarget(self, action: #selector(doneTask), for: .touchUpInside)
         cell.btDone.tag = indexPath.row
         
+        
         if(showList[indexPath.row].done == true){
-            cell.btDone.isHidden = true;
+            cell.checkImg.isHidden = false;
         }
         if(showList[indexPath.row].done == false){
-            cell.btDone.isHidden = false;
+            cell.checkImg.isHidden = true;
         }
+        
+        
+        cell.btDone.isHidden = true;
         
         return cell;
     }
@@ -137,12 +151,22 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         var count = 0;
         for task in tasksList{
             if (task == showList[sender.tag]){
-                tasksList[count].done = true;
+                if(tasksList[count].done == false){
+                    tasksList[count].done = true;
+                    loadCards();
+                    return;
+                }
+                if(tasksList[count].done == true){
+                    tasksList[count].done = false;
+                    loadCards();
+                    return;
+                }
+                
             }
             count = count + 1;
         }
         
-        loadCards();
+        //loadCards();
     }
     
     func loadCards(){

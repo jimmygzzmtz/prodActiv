@@ -33,6 +33,10 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(quitaTeclado))
+        view.addGestureRecognizer(tap)
+        
         if (editTag) {
             btnSave.isEnabled = true
             tfTagName.text = editingTag.name
@@ -43,6 +47,10 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         else {
             lblTitle.text = "New Tag"
         }
+    }
+    
+    @IBAction func quitaTeclado(){
+        view.endEditing(true)
     }
     
     // BTN METHODS
