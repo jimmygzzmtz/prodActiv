@@ -33,9 +33,22 @@ extension String {
     }
 }
 
-class ComposeVC: UIViewController, protocolAddTaskDetails {
+class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     
     @IBOutlet weak var tvCompose: UITextView!
+    @IBOutlet weak var tvDetectedTags: UITextView!
+    
+    var datesEnglish = "((for)?\\s*(today|tomorrow|in a day|in \\d+ days|next week|in a week|in \\d+ weeks|next month|in a month|in \\d+ months|next year|in a year|in \\d+ years))|((for|on)?\\s*(next)?\\s*(monday|tuesday|wednesday|thursday|friday|saturday|sunday))|((for|on)?\\s*(january \\d+|february \\d+|march \\d+|april \\d+|may \\d+|june \\d+|july \\d+|august \\d+|september \\d+|october \\d+|november \\d+|december \\d+))";
+    var datesSpanish = "((para)?\\s*(hoy|mañana|en un día|en \\d+ días|la próxima semana|en una semana|en \\d+ semanas|el próximo mes|en un mes|en \\d+ meses|el próximo año|en un año|en \\d+ años))|((para|en)?\\s*(el)?\\s*(siguiente)?\\s*(lunes|martes|miércoles|jueves|viernes|sábado|domingo))|((para|en)?\\s*(el)?\\s*(enero \\d+|\\d+ de enero|febrero \\d+|\\d+ de febrero|marzo \\d+|\\d+ de marzo|abril \\d+|\\d+ de abril|mayo \\d+|\\d+ de mayo|junio \\d+|\\d+ de junio|julio \\d+|\\d+ de julio|agosto \\d+|\\d+ de agosto|septiembre \\d+|\\d+ de septiembre|octubre \\d+|\\d+ de octubre|noviembre \\d+|\\d+ de noviembre|diciembre \\d+|\\d+ de diciembre))";
+    
+    var newDate = Date()
+    
+    var dateMatch = "";
+    var timeMatch = "";
+    var allDates = "";
+    var taskText = "";
+    var tagMatch : Tag!
+    
     
     var newTask = Task(title: "title", date: Date(), tag: Tag(name: "tagname", color: UIColor.gray), done: false);
     var tagsArray = [Tag]()
@@ -50,6 +63,7 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
         
         self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
         self.tvCompose.layer.borderWidth = 1
+        self.tvCompose.delegate = self
         
         if(UserDefaults.standard.object(forKey: "tagsList") == nil)
         {
@@ -65,6 +79,26 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
             let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
             tagsArray = arr!
         }
+    }
+    
+    func textView(_ textView: UITextView,
+                  shouldChangeTextIn range: NSRange,
+                  replacementText string: String) -> Bool {
+        matchVariables()
+        var detectedText = ""
+        if (dateMatch != "") {
+            detectedText += dateMatch
+            detectedText += "\n"
+        }
+        if (timeMatch != "") {
+            detectedText += timeMatch
+            detectedText += "\n "
+        }
+        if (tagMatch.name != "") {
+            detectedText += tagMatch.name
+        }
+        tvDetectedTags.text = detectedText
+        return true
     }
     
     @IBAction func quitaTeclado(){
@@ -84,21 +118,10 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
         }
     }
     
-    @IBAction func addButton(_ sender: UIButton) {
-        
-        
-        let taskText = tvCompose.text!
+    func matchVariables() {
+        taskText = tvCompose.text!
         
         //DATE MATCHING
-        var newDate = Date()
-        
-        var dateMatch = "";
-        var timeMatch = "";
-        
-        let datesEnglish = "((for)?\\s*(today|tomorrow|in a day|in \\d+ days|next week|in a week|in \\d+ weeks|next month|in a month|in \\d+ months|next year|in a year|in \\d+ years))|((for|on)?\\s*(next)?\\s*(monday|tuesday|wednesday|thursday|friday|saturday|sunday))|((for|on)?\\s*(january \\d+|february \\d+|march \\d+|april \\d+|may \\d+|june \\d+|july \\d+|august \\d+|september \\d+|october \\d+|november \\d+|december \\d+))";
-        let datesSpanish = "((para)?\\s*(hoy|mañana|en un día|en \\d+ días|la próxima semana|en una semana|en \\d+ semanas|el próximo mes|en un mes|en \\d+ meses|el próximo año|en un año|en \\d+ años))|((para|en)?\\s*(el)?\\s*(siguiente)?\\s*(lunes|martes|miércoles|jueves|viernes|sábado|domingo))|((para|en)?\\s*(el)?\\s*(enero \\d+|\\d+ de enero|febrero \\d+|\\d+ de febrero|marzo \\d+|\\d+ de marzo|abril \\d+|\\d+ de abril|mayo \\d+|\\d+ de mayo|junio \\d+|\\d+ de junio|julio \\d+|\\d+ de julio|agosto \\d+|\\d+ de agosto|septiembre \\d+|\\d+ de septiembre|octubre \\d+|\\d+ de octubre|noviembre \\d+|\\d+ de noviembre|diciembre \\d+|\\d+ de diciembre))";
-        
-        var allDates = "";
         
         if(switchEsp == true && switchEng == true){
             allDates = datesEnglish + "|" + datesSpanish;
@@ -115,6 +138,8 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
         if (dateMatches.count != 0){
             dateMatch = dateMatches[0][0];
             newDate = convertToDate(sDate: dateMatch, today: newDate);
+        } else {
+            dateMatch = ""
         }
         
         // TIME MATCHING
@@ -136,6 +161,8 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
         if (timeMatches.count != 0){
             timeMatch = timeMatches[0][0];
             newDate = convertToTime(sTime: timeMatch, theDate: newDate);
+        } else {
+            timeMatch = ""
         }
         
         if(timeMatches.count == 0){
@@ -144,7 +171,6 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
         
         // TAG MATCHING
         
-        var tagMatch : Tag!
         for tag in tagsArray {
             let searchName = tag.name.lowercased()
             let searchText = taskText.lowercased()
@@ -154,12 +180,18 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
                     tagMatch = tag
                     break
                 }
+            } else {
+                tagMatch = Tag(name: "", color: UIColor.white)
             }
         }
         if (tagMatch == nil) {
             tagMatch = Tag(name: "", color: UIColor(red:1.00, green:1.00, blue:1.00, alpha:1.0))
         }
+    }
+    
+    @IBAction func addButton(_ sender: UIButton) {
         
+        matchVariables()
         //tagMatch = Tag(name: "iOS", color: UIColor.cyan)
         
         // TASK CREATION
