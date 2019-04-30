@@ -33,7 +33,7 @@ extension String {
     }
 }
 
-class ComposeVC: UIViewController {
+class ComposeVC: UIViewController, protocolAddTaskDetails {
     
     @IBOutlet weak var tvCompose: UITextView!
     
@@ -200,6 +200,11 @@ class ComposeVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    func addTask(newTask: Task) {
+        delegate.addTask(newTask: newTask)
+        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func cancelButton(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -208,15 +213,13 @@ class ComposeVC: UIViewController {
     
     // MARK: - Navigation
 
-    /*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cardsView = segue.destination as! FirstViewController
-        cardsView.tasksList.append(newTask);
-        cardsView.collectionView.reloadData();
+        if segue.identifier == "details" {
+            let detailsView = segue.destination as! DetailsVC
+            detailsView.delegate = self
+        }
     }
-     */
-    
+ 
     
     func convertToDate(sDate: String, today: Date) -> Date {
         

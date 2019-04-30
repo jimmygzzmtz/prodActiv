@@ -8,19 +8,46 @@
 
 import UIKit
 
+protocol protocolAddTaskDetails {
+    func addTask(newTask : Task)
+}
+
 class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var tagsArray = [Tag]()
-    var selectedTag = -1
+    var selectedColor : UIColor!
+    var selectedTag : Tag!
+    
+    var delegate : protocolAddTaskDetails!
     
     @IBOutlet weak var tfTaskName: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var viewSelectedColor: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchTags()
         let currentDate = Date()
         datePicker.minimumDate = currentDate
+    }
+    
+    @IBAction func addTask(_ sender: UIButton) {
+        
+        let titulo = tfTaskName.text!
+        
+        if (titulo != "") {
+            
+            if (selectedTag == nil) {
+                selectedTag = Tag(name: "", color: UIColor(red:1.00, green:1.00, blue:1.00, alpha:1.0))
+            }
+            
+            let newTask = Task(title: titulo, date: datePicker.date, tag: selectedTag, done: false)
+            
+            delegate.addTask(newTask: newTask)
+        }
+        else {
+            showAlert(msg: "Please enter a task name.")
+        }
     }
     
     // TAGS TABLE VIEW
@@ -38,7 +65,9 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        selectedColor = tagsArray[indexPath.row].color
+        selectedTag = tagsArray[indexPath.row]
+        viewSelectedColor.backgroundColor = selectedColor.withAlphaComponent(0.75)
     }
     
     // FUNCTIONS
@@ -58,5 +87,12 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
             tagsArray = arr!
         }
+    }
+    
+    func showAlert(msg : String) {
+        let alert = UIAlertController(title: "Error", message: msg, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
 }
