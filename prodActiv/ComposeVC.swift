@@ -196,7 +196,6 @@ class ComposeVC: UIViewController, protocolAddTaskDetails {
             
         }
         
-        
         self.dismiss(animated: true, completion: nil)
     }
     
