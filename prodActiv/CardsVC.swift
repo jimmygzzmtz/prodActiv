@@ -8,7 +8,8 @@
 
 import UIKit
 
-class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolAddTask {
+class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolTask {
+    
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -114,14 +115,40 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let taskView = segue.destination as! ComposeVC
-        taskView.delegate = self
+        let composeView = segue.destination as! ComposeVC
+        if (segue.identifier == "add") {
+            composeView.editTask = false
+        }
+        composeView.delegate = self
     }
+    
+    
+    @IBAction func showDetails(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let composeView = storyboard.instantiateViewController(withIdentifier: "ComposeVC") as! ComposeVC
+        var count = 0;
+        for task in tasksList{
+            if (task == showList[sender.tag]){
+                composeView.editTitle = tasksList[count].title
+                composeView.editTag = tasksList[count].tag
+                composeView.editDate = tasksList[count].date
+            }
+            count = count + 1;
+        }
+        composeView.editTask = true
+        present(composeView, animated: true, completion: nil)
+    }
+    
+    //TASK PROTOCOL
     
     func addTask(newTask: Task) {
         tasksList.append(newTask);
         tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
         loadCards();
+    }
+    
+    func editTask(newTask: Task) {
+        
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {

@@ -9,14 +9,14 @@
 import UIKit
 import UserNotifications
 
-protocol protocolAddTask {
+protocol protocolTask {
     func addTask(newTask : Task)
+    func editTask(newTask : Task)
 }
 
 var switchEsp = true;
 var switchEng = true;
 var switchNotif = true;
-
 
 extension String {
     func matchingStrings(regex: String) -> [[String]] {
@@ -35,6 +35,11 @@ extension String {
 
 class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     
+    var editTask : Bool!
+    var editTitle : String!
+    var editTag : Tag!
+    var editDate : Date!
+    
     @IBOutlet weak var tvCompose: UITextView!
     @IBOutlet weak var tvDetectedTags: UITextView!
     
@@ -49,36 +54,61 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     var taskText = "";
     var tagMatch : Tag!
     
+    func getTopMostViewController() -> UIViewController? {
+        var topMostViewController = UIApplication.shared.keyWindow?.rootViewController
+        
+        while let presentedViewController = topMostViewController?.presentedViewController {
+            topMostViewController = presentedViewController
+        }
+        
+        return topMostViewController
+    }
     
     var newTask = Task(title: "title", date: Date(), tag: Tag(name: "tagname", color: UIColor.gray), done: false);
     var tagsArray = [Tag]()
     
-    var delegate : protocolAddTask!
+    var delegate : protocolTask!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(quitaTeclado))
-        view.addGestureRecognizer(tap)
-        
-        self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
-        self.tvCompose.layer.borderWidth = 1
-        self.tvCompose.delegate = self
-        
-        if(UserDefaults.standard.object(forKey: "tagsList") == nil)
-        {
-            let t1 = Tag(name: "Personal", color: UIColor.orange)
-            let t2 = Tag(name: "Work", color: UIColor.yellow)
-            let t3 = Tag(name: "Health", color: UIColor.cyan)
-            tagsArray.append(t1)
-            tagsArray.append(t2)
-            tagsArray.append(t3)
+        if (editTask == true) {
+            print("edit task mode activate")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let detailsView = storyboard.instantiateViewController(withIdentifier: "DetailsVC") as! DetailsVC
+            
+            detailsView.editTask = true
+            detailsView.editDate = editDate
+            detailsView.editTag = editTag
+            detailsView.editTitle = editTitle
+            
+            getTopMostViewController()?.present(detailsView, animated: true, completion: nil)
         }
-        else{
-            let saveData = UserDefaults.standard.data(forKey: "tagsList")
-            let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
-            tagsArray = arr!
+        else {
+            print("add task mode activate")
+            let tap = UITapGestureRecognizer(target: self, action: #selector(quitaTeclado))
+            view.addGestureRecognizer(tap)
+            
+            self.tvCompose.layer.borderColor = UIColor.lightGray.cgColor
+            self.tvCompose.layer.borderWidth = 1
+            self.tvCompose.delegate = self
+            
+            if(UserDefaults.standard.object(forKey: "tagsList") == nil)
+            {
+                let t1 = Tag(name: "Personal", color: UIColor.orange)
+                let t2 = Tag(name: "Work", color: UIColor.yellow)
+                let t3 = Tag(name: "Health", color: UIColor.cyan)
+                tagsArray.append(t1)
+                tagsArray.append(t2)
+                tagsArray.append(t3)
+            }
+            else{
+                let saveData = UserDefaults.standard.data(forKey: "tagsList")
+                let arr = NSKeyedUnarchiver.unarchiveObject(with: saveData!) as? [Tag]
+                tagsArray = arr!
+            }
         }
+        
     }
     
     func textView(_ textView: UITextView,
@@ -119,6 +149,8 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     }
     
     func matchVariables() {
+        newDate = Date()
+        
         taskText = tvCompose.text!
         
         //DATE MATCHING

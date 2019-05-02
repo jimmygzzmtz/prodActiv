@@ -18,6 +18,11 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedColor : UIColor!
     var selectedTag : Tag!
     
+    var editTask : Bool!
+    var editTitle : String!
+    var editTag : Tag!
+    var editDate : Date!
+    
     var delegate : protocolAddTaskDetails!
     
     @IBOutlet weak var tfTaskName: UITextField!
@@ -26,6 +31,11 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if (editTask) {
+            tfTaskName.text = editTitle
+            datePicker.date = editDate
+            viewSelectedColor.backgroundColor = editTag.color
+        }
         fetchTags()
         let currentDate = Date()
         datePicker.minimumDate = currentDate
