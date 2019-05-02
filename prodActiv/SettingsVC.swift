@@ -60,6 +60,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchTags()
+        switchEng.setOn(true, animated: true)
+        switchEsp.setOn(true, animated: true)
     }
 
     // TAGS TABLE VIEW
