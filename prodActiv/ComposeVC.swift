@@ -82,6 +82,7 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
             detailsView.editDate = editDate
             detailsView.editTag = editTag
             detailsView.editTitle = editTitle
+            detailsView.delegate = self
             
             getTopMostViewController()?.present(detailsView, animated: true, completion: nil)
         }
@@ -274,8 +275,6 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     
     func editTask(newTask: Task) {
         delegate.editTask(newTask: newTask)
-        self.dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func cancelButton(_ sender: Any) {

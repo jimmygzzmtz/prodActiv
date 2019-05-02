@@ -138,6 +138,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
             count = count + 1;
         }
         composeView.editTask = true
+        composeView.delegate = self
         present(composeView, animated: true, completion: nil)
     }
     
@@ -150,7 +151,14 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     }
     
     func editTask(newTask: Task) {
+        print("edit cards")
+        print(newTask.date)
+        print(newTask.title)
+        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         self.tasksList[editPos] = newTask
+        tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
+        loadCards();
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {
