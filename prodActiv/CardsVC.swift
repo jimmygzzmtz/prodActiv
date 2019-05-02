@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolTask {
+class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIGestureRecognizerDelegate, protocolTask, protocolSettings {
     
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -117,11 +117,16 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let composeView = segue.destination as! ComposeVC
+        print("Entered settings")
         if (segue.identifier == "add") {
+            let composeView = segue.destination as! ComposeVC
             composeView.editTask = false
+            composeView.delegate = self
         }
-        composeView.delegate = self
+        else {
+            let settingsView = segue.destination as! SettingsVC
+            settingsView.delegate = self
+        }
     }
     
     var editPos : Int!
@@ -161,6 +166,13 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         self.tasksList[editPos] = newTask
         tasksList.sort(by: ({ $0.date.compare($1.date) == ComparisonResult.orderedAscending}))
         loadCards();
+    }
+    
+    // SETTINGS PROTOCOL
+    
+    func updateTag(newTag: Tag) {
+        print("received tag")
+        print(newTag)
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {
