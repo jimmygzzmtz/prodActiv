@@ -711,16 +711,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Créditos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgS-ZD-3FV">
-                                <rect key="frame" x="118" y="46" width="139" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
-                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yLQ-1g-f4c">
-                                <rect key="frame" x="16" y="114" width="343" height="381.5"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yLQ-1g-f4c">
+                                <rect key="frame" x="16" y="102" width="343" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">prodActiv ha sido desarrollado por estudiantes del Tecnológico de Monterrey durante el semestre Enero Mayo de 2019, como parte del curso Desarrollo de Aplicaciones para Dispositivos Móviles y asesorados por la maestra Yolanda Martínez Treviño.
 
@@ -734,8 +726,22 @@ prodActiv se distribuye como está de manera gratuita y se prohíbe su distribuc
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Créditos" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pgS-ZD-3FV">
+                                <rect key="frame" x="118" y="40" width="139" height="42"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="yLQ-1g-f4c" firstAttribute="leading" secondItem="mzs-BB-L56" secondAttribute="leadingMargin" id="3hX-7m-voq"/>
+                            <constraint firstItem="yLQ-1g-f4c" firstAttribute="centerX" secondItem="mFf-Rh-9BF" secondAttribute="centerX" id="Snp-9k-DTg"/>
+                            <constraint firstItem="pgS-ZD-3FV" firstAttribute="top" secondItem="mFf-Rh-9BF" secondAttribute="top" constant="20" id="WDC-pX-NvA"/>
+                            <constraint firstItem="pgS-ZD-3FV" firstAttribute="centerX" secondItem="yLQ-1g-f4c" secondAttribute="centerX" id="Wct-9w-cZI"/>
+                            <constraint firstItem="yLQ-1g-f4c" firstAttribute="top" secondItem="pgS-ZD-3FV" secondAttribute="bottom" constant="20" id="YCu-v4-pgP"/>
+                            <constraint firstItem="yLQ-1g-f4c" firstAttribute="centerY" secondItem="mFf-Rh-9BF" secondAttribute="centerY" id="tev-wh-WS5"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="mFf-Rh-9BF"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Credits" image="first" id="yZP-PE-rz5"/>
