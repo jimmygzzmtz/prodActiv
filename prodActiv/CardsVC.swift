@@ -198,6 +198,10 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     
     @IBAction func doneTask(_ sender: UIButton) {
         //tasksList[sender.tag].done = true;
+        
+        if(showList.count == 0){
+            return
+        }
     
         var count = 0;
         for task in tasksList{
