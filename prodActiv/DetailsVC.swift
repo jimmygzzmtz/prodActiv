@@ -26,6 +26,8 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var delegate : protocolAddTaskDetails!
     
+    //var switchNotif : Bool!
+    
     @IBOutlet weak var tfTaskName: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var viewSelectedColor: UIView!
@@ -45,6 +47,15 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         fetchTags()
         let currentDate = Date()
         datePicker.minimumDate = currentDate
+        
+        /*
+        if(UserDefaults.standard.object(forKey: "switchNotif") != nil){
+            switchNotif = UserDefaults.standard.bool(forKey: "switchNotif")
+        }
+        else{
+            UserDefaults.standard.set(true, forKey: "switchNotif")
+        }
+        */
     }
     
     @IBAction func quitaTeclado(){

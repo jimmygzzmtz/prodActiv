@@ -106,6 +106,8 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
             cell.btInfo.isHidden = false;
         }
         
+        cell.btInfo.tag = indexPath.row
+        
         
         cell.btDone.isHidden = true;
         

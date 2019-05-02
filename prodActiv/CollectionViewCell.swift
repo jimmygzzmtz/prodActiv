@@ -46,7 +46,7 @@ class CollectionViewCell: UICollectionViewCell {
                     self.center = CGPoint(x: self.originalPoint.x + xDistance, y: self.originalPoint.y)
                 }
             case UIGestureRecognizer.State.ended:
-                let hasMovedToFarLeft = self.frame.maxX < UIScreen.main.bounds.width / 2
+                let hasMovedToFarLeft = self.frame.maxX < UIScreen.main.bounds.width / 6
                 if (hasMovedToFarLeft) {
                     btDone.sendActions(for: .touchUpInside)
                     self.center = self.originalPoint

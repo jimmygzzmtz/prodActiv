@@ -103,9 +103,16 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        switchEng.isOn = UserDefaults.standard.bool(forKey: "switchEng")
-        switchEsp.isOn = UserDefaults.standard.bool(forKey: "switchEsp")
-        switchNotif.isOn = UserDefaults.standard.bool(forKey: "switchNotif")
+        if(UserDefaults.standard.object(forKey: "switchEng") != nil){
+            switchEng.isOn = UserDefaults.standard.bool(forKey: "switchEng")
+            switchEsp.isOn = UserDefaults.standard.bool(forKey: "switchEsp")
+            switchNotif.isOn = UserDefaults.standard.bool(forKey: "switchNotif")
+        }
+        else{
+            UserDefaults.standard.set(true, forKey: "switchEng")
+            UserDefaults.standard.set(true, forKey: "switchEsp")
+            UserDefaults.standard.set(true, forKey: "switchNotif")
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -270,7 +270,7 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     func addTask(newTask: Task) {
         delegate.addTask(newTask: newTask)
         self.dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
     }
     
     func editTask(newTask: Task) {
