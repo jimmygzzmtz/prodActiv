@@ -119,6 +119,8 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     }
     
     func matchVariables() {
+        newDate = Date()
+        
         taskText = tvCompose.text!
         
         //DATE MATCHING

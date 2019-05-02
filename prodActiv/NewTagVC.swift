@@ -35,6 +35,7 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(quitaTeclado))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
         if (editTag) {
