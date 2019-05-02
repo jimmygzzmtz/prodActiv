@@ -99,9 +99,11 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         
         if(showList[indexPath.row].done == true){
             cell.checkImg.isHidden = false;
+            cell.btInfo.isHidden = true;
         }
         if(showList[indexPath.row].done == false){
             cell.checkImg.isHidden = true;
+            cell.btInfo.isHidden = false;
         }
         
         
