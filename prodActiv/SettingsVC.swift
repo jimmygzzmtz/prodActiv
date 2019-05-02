@@ -8,8 +8,11 @@
 
 import UIKit
 
+protocol protocolSettings {
+    func updateTag(newTag : Tag) -> Void
+}
+
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, protocolTags {
-    
     
     // TAGS PROTOCOL
     
@@ -26,6 +29,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     var tagsArray = [Tag]()
+    
+    var delegate : protocolSettings!
     
     @IBOutlet weak var switchEsp: UISwitch!
     @IBOutlet weak var switchEng: UISwitch!
