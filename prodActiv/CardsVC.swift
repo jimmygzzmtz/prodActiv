@@ -122,6 +122,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         composeView.delegate = self
     }
     
+    var editPos : Int!
     
     @IBAction func showDetails(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -129,6 +130,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
         var count = 0;
         for task in tasksList{
             if (task == showList[sender.tag]){
+                editPos = sender.tag
                 composeView.editTitle = tasksList[count].title
                 composeView.editTag = tasksList[count].tag
                 composeView.editDate = tasksList[count].date
@@ -148,7 +150,7 @@ class CardsVC: UIViewController, UICollectionViewDataSource, UICollectionViewDel
     }
     
     func editTask(newTask: Task) {
-        
+        self.tasksList[editPos] = newTask
     }
     
     @IBAction func deleteTask(_ sender: UIButton) {

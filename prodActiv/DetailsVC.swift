@@ -10,6 +10,7 @@ import UIKit
 
 protocol protocolAddTaskDetails {
     func addTask(newTask : Task)
+    func editTask(newTask : Task)
 }
 
 class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -50,16 +51,18 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBAction func saveTask(_ sender: UIButton) {
         
         let titulo = tfTaskName.text!
-        
         if (titulo != "") {
-            
             if (selectedTag == nil) {
                 selectedTag = Tag(name: "", color: UIColor(red:1.00, green:1.00, blue:1.00, alpha:1.0))
             }
-            
             let newTask = Task(title: titulo, date: datePicker.date, tag: selectedTag, done: false)
             
-            delegate.addTask(newTask: newTask)
+            if (editTask) {
+                delegate.editTask(newTask: newTask)
+            }
+            else {
+                delegate.addTask(newTask: newTask)
+            }
         }
         else {
             showAlert(msg: "Please enter a task name.")

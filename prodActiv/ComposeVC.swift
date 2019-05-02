@@ -35,6 +35,7 @@ extension String {
 
 class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     
+    
     var editTask : Bool!
     var editTitle : String!
     var editTag : Tag!
@@ -263,8 +264,16 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // TASK PROTOCOL
+    
     func addTask(newTask: Task) {
         delegate.addTask(newTask: newTask)
+        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func editTask(newTask: Task) {
+        delegate.editTask(newTask: newTask)
         self.dismiss(animated: true, completion: nil)
         self.dismiss(animated: true, completion: nil)
     }
