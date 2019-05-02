@@ -279,6 +279,7 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "details" {
             let detailsView = segue.destination as! DetailsVC
+            detailsView.editTask = false
             detailsView.delegate = self
         }
     }

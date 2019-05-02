@@ -41,7 +41,13 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         datePicker.minimumDate = currentDate
     }
     
-    @IBAction func addTask(_ sender: UIButton) {
+    
+    @IBAction func cancel(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func saveTask(_ sender: UIButton) {
         
         let titulo = tfTaskName.text!
         
