@@ -26,7 +26,6 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         tagsArray[i.row] = newTag
         tagsTableView.reloadData()
         saveData()
-        delegate.updateTag(newTag: newTag)
     }
     
     var tagsArray = [Tag]()
