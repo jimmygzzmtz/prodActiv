@@ -730,5 +730,11 @@ class ComposeVC: UIViewController, UITextViewDelegate, protocolAddTaskDetails {
         return Calendar.current.date(bySettingHour: hours, minute: minutes, second: 0, of: theDate)!
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscape
+    }
+    override var shouldAutorotate: Bool {
+        return false
+    }
 
 }

@@ -146,5 +146,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         present(alert, animated: true, completion: nil)
     }
     
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscape
+    }
+    override var shouldAutorotate: Bool {
+        return false
+    }
 }
 
