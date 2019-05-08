@@ -70,7 +70,7 @@ class NewTagVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             }
         }
         else {
-            showAlert(msg: "Please enter a name for your tag.")
+            //showAlert(msg: "Please enter a name for your tag.")
         }
     }
     
