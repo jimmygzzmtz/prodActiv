@@ -136,7 +136,7 @@ class DetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscape
+        return UIInterfaceOrientationMask.portrait
     }
     override var shouldAutorotate: Bool {
         return false
